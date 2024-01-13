@@ -22,7 +22,7 @@ export async function run(): Promise<void> {
       triggers: ['github']
     })
     // Set outputs for other workflow steps to use
-    core.setOutput('time', new Date().toTimeString())
+    core.setOutput('result', "success")
   } catch (error) {
     // Fail the workflow run if an error occurs
     if (error instanceof Error) core.setFailed(error.message)

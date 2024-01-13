@@ -1,24 +1,15 @@
-name: 'The name of your action here'
-description: 'Provide a description here'
-author: 'Your name or organization here'
-
-# Add your action's branding here. This will appear on the GitHub Marketplace.
-branding:
-  icon: 'heart'
-  color: 'red'
-
-# Define your inputs here.
+name: 'Lokalise trigger PR  '
+description: 'Triggers build on Lokalise that creates a PR '
 inputs:
-  milliseconds:
-    description: 'Your input description here'
+  LOKALISE_API_KEY:  # Lokalise API key
+    description: 'API KEY'
     required: true
-    default: '1000'
-
-# Define your outputs here.
+  LOKALISE_PROJECT_KEY: #Lokalise Projekt key 
+    description: "Project key"
+    required: true
 outputs:
-  time:
-    description: 'Your output description here'
-
+  result: # id of output
+    description: 'display wether it when good or not'
 runs:
-  using: node20
-  main: dist/index.js
+  using: 'node20'
+  main: 'dist/index.js'
