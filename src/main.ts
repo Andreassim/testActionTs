@@ -1,5 +1,5 @@
 import * as core from '@actions/core'
-import { wait } from './wait'
+const lokalise = import('@lokalise/node-api')
 
 /**
  * The main function for the action.
@@ -7,16 +7,20 @@ import { wait } from './wait'
  */
 export async function run(): Promise<void> {
   try {
-    const ms: string = core.getInput('milliseconds')
+    const API_KEY: string = core.getInput('LOKALISE_API_KEY')
+    const PROJECT_KEY: string = core.getInput('LOKALISE_PROJECT_KEY')
 
     // Debug logs are only output if the `ACTIONS_STEP_DEBUG` secret is true
-    core.debug(`Waiting ${ms} milliseconds ...`)
+    core.debug(`API_KEY = ${API_KEY}`)
+    core.debug(`PROJECT_KEY = ${PROJECT_KEY}`)
 
-    // Log the current timestamp, wait, then log the new timestamp
-    core.debug(new Date().toTimeString())
-    await wait(parseInt(ms, 10))
-    core.debug(new Date().toTimeString())
-
+    const lokAPI = new (await lokalise).LokaliseApi({ apiKey: API_KEY })
+    await lokAPI.files().download(PROJECT_KEY, {
+      format: 'xlf',
+      original_filenames: false,
+      bundle_structure: 'frontend/src/i18n/messages.%LANG_ISO%.%FORMAT%',
+      triggers: ['github']
+    })
     // Set outputs for other workflow steps to use
     core.setOutput('time', new Date().toTimeString())
   } catch (error) {
